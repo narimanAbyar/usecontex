@@ -1,17 +1,52 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import { useContext,createContext } from "react";
+import ReactDOM from "react-dom";
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const blogInfo={
+  React:{
+    post:'hooks',
+    author:'nariman'
+  },
+  Sql:{
+    post:'database',
+    author:'ali'
+  }
+}
+const blogInfoContext=createContext(blogInfo);
+
+function ParentInfoComponenet(){
+  return(
+      <blogInfoContext.Provider value={blogInfo}>
+        <h1>Component useContext</h1>
+        <FirstChildInfoComponenet/>
+        <SecondChildInfoComponenet/>
+      </blogInfoContext.Provider>
+
+  );
+}
+
+function FirstChildInfoComponenet(){
+  const FirstChild=useContext(blogInfoContext);
+  return(
+    <div>
+      <h3>React Blog Details</h3>
+      <p>Topic: {FirstChild.React.post}</p>
+      <p>Author: {FirstChild.React.author}</p>
+    </div>
+
+  );
+}
+function SecondChildInfoComponenet(){
+  const SecondChild=useContext(blogInfoContext);
+  return(
+    <div>
+      <h3>React Blog Details</h3>
+      <p>Topic: {SecondChild.Sql.post}</p>
+      <p>Author: {SecondChild.Sql.author}</p>
+    </div>
+
+  );
+}
+
+
+ReactDOM.render(<ParentInfoComponenet />, document.getElementById("root"));
